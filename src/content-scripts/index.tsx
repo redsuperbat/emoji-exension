@@ -9,23 +9,27 @@ const isInputEl = (input: unknown): input is HTMLInputElement =>
   'value' in input &&
   typeof input['value'] === 'string';
 
-document.querySelectorAll('input[type=text]').forEach((input) => {
-  if (!isInputEl(input)) {
-    return;
-  }
+document
+  .querySelectorAll('input[type=text], [aria-label="Message"], textarea')
+  .forEach((input) => {
+    console.log('Found element', input);
 
-  const insert = (emoji: string, replace: string) => {
-    input.value = input.value.replaceAll(replace, emoji);
-  };
+    if (!isInputEl(input)) {
+      return;
+    }
 
-  const mountableEl = document.createElement('div');
-  mountableEl.style.position = 'fixed';
+    const insert = (emoji: string, replace: string) => {
+      input.value = input.value.replaceAll(replace, emoji);
+    };
 
-  const boundingRect = input.getBoundingClientRect();
-  mountableEl.style.left = `${boundingRect.left}px`;
-  mountableEl.style.top = `${boundingRect.bottom}px`;
+    const mountableEl = document.createElement('div');
+    mountableEl.style.position = 'fixed';
 
-  document.body.appendChild(mountableEl);
+    const boundingRect = input.getBoundingClientRect();
+    mountableEl.style.left = `${boundingRect.left}px`;
+    mountableEl.style.top = `${boundingRect.bottom}px`;
 
-  render(() => <App inputEl={input} insert={insert} />, mountableEl);
-});
+    document.body.appendChild(mountableEl);
+
+    render(() => <App inputEl={input} insert={insert} />, mountableEl);
+  });

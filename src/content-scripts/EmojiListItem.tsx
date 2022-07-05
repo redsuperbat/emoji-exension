@@ -10,13 +10,13 @@ export const EmojiListItem: Component<{
   const slugEnd = () => props.emoji.slug.slice(props.query.length);
   return (
     <div
-      class="p-1 hover:bg-slate-300 rounded-md"
+      class="p-1 hover:bg-slate-300 rounded-md text-black"
       classList={{
         'bg-slate-300': props.focused,
       }}
     >
-      {props.emoji.character} :<span class="font-bold">{slugStart()}</span>
-      <span>{slugEnd()}</span>:
+      {props.emoji.character} <span class="font-bold">{slugStart()}</span>
+      <span>{slugEnd()}</span>
     </div>
   );
 };

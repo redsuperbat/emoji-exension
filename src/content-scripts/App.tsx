@@ -12,36 +12,35 @@ import { EmojiList } from './EmojiList';
 export const App: Component<{
   inputEl: HTMLInputElement;
   insert: InsertFunc;
-}> = ({ inputEl, insert }) => {
+}> = (props) => {
   const [value, setValue] = createSignal('');
   const [query, setQuery] = createSignal('');
   const [show, setShow] = createSignal(false);
 
   const setQueryListener = () => {
-    setValue(inputEl.value);
+    setValue(props.inputEl.value);
 
     let idx = -1;
-    for (let i = inputEl.value.length; i >= 0; i--) {
-      const char = inputEl.value[i];
+    for (let i = props.inputEl.value.length; i >= 0; i--) {
+      const char = props.inputEl.value[i];
       if (char === ':') {
         idx = i;
         break;
       }
     }
 
-    const queryValue = inputEl.value.slice(idx);
+    const queryValue = props.inputEl.value.slice(idx).trim();
     if (queryValue === query()) return;
-    console.log({ queryValue, idx });
 
     setQuery(queryValue);
   };
 
   onMount(() => {
-    inputEl.addEventListener('keyup', setQueryListener);
+    props.inputEl.addEventListener('keyup', setQueryListener);
   });
 
   onCleanup(() => {
-    inputEl.removeEventListener('keyup', setQueryListener);
+    props.inputEl.removeEventListener('keyup', setQueryListener);
   });
 
   createEffect(() => {
@@ -50,7 +49,7 @@ export const App: Component<{
   });
 
   const insertWrapper = (emoji: string, replace: string) => {
-    insert(emoji, replace);
+    props.insert(emoji, replace);
     setShow(false);
     setQuery('');
   };

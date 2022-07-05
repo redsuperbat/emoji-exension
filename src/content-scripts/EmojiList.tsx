@@ -20,7 +20,17 @@ export const EmojiList: Component<{
 
   const onArrowKeys = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      props.insert(selectedEmojis()[focusedIndex()].character, props.query);
+      e.cancelBubble = true;
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
+      const emoji = selectedEmojis()[focusedIndex()]?.character;
+      if (!emoji) {
+        console.error('Found no emoji at index', focusedIndex());
+        console.log(selectedEmojis());
+        return;
+      }
+      props.insert(emoji, props.query);
     }
     if (e.key === 'ArrowUp') {
       if (focusedIndex() === 0) return;
@@ -41,14 +51,14 @@ export const EmojiList: Component<{
 
   createEffect(() => {
     const filteredEmojis = emojis
-      .filter(({ slug }) => slug.startsWith(props.query.slice(1)))
+      .filter(({ slug }) => slug.startsWith(props.query))
       .slice(0, max);
 
     setEmojis(filteredEmojis);
   });
 
   return (
-    <div class="bg-white rounded-md z-[999] shadow-md">
+    <div class="bg-white rounded-md !z-[999] shadow-md">
       <For
         each={selectedEmojis()}
         children={(emoji, idx) => (
