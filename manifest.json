@@ -1,20 +1,13 @@
 {
   "name": "Emoji selector",
-  "version": "1.0",
+  "version": "3",
   "description": "Select emojis in any text field by pressing ':' to start searching for one.",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "permissions": ["activeTab"],
-  "icons": {
-    "128": "shuffle.png"
-  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["./content-scripts/index.js"],
-      "css": ["./content-scripts/styles.css"]
+      "js": ["src/content-scripts/index.tsx"]
     }
-  ],
-  "browser_action": {
-    "default_icon": "./shuffle.png"
-  }
+  ]
 }
